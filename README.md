@@ -1,7 +1,5 @@
-# ASP.NET Core project from Team 7
+# ASP.NET Core project
 ## Cao Thanh Loi - N18DCCN118
-## Tan Thanh - N18DCCN
-## Ngo Trung Dung - N18DCCN
 ## Technologies
 - ASP.NET Core
 - Entity Framework Core
