@@ -1,0 +1,79 @@
+﻿@model eRentSolution.ViewModels.Catalog.Categories.CategoryViewModel
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+@{ ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="container-fluid">
+    <h1 class="mt-4">Chi tiết</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a class="nav-link" asp-action="index" asp-controller="home">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Chi tiết</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index" asp-controller="Category">Về danh sách</a>
+        </div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Thuộc tính
+                            </th>
+                            <th>
+                                Mô tả
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>
+                                @Html.DisplayNameFor(model => model.Id)
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.Id)
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+
+                        <tr>
+                            <td>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.Name)
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+
+                        <tr>
+                            <td>
+                                @Html.DisplayNameFor(model => model.ParentId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.ParentId)
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+
+                        <tr>
+                            <td>
+                                @Html.DisplayNameFor(model => model.Image)
+                            </td>
+                            <td>
+                                <img src="@Configuration["BaseAddress"]/user-content/@Model.Image" alt="N/A" style="width: 70px; height: 70px; object-fit: cover;">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    

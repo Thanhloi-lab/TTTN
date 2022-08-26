@@ -1,0 +1,57 @@
+﻿@model eRentSolution.AdminApp.Models.HomeViewModel
+@{ ViewData["Title"] = "Trang chủ"; }
+@section Scripts{
+    <script src="/assets/demo/chart-area-demo.js"></script>
+    <script src="/assets/demo/chart-bar-demo.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="/assets/demo/datatables-demo.js"></script>
+}
+@*@model ErrorViewModel*@
+
+
+@foreach (var item in Model.StatisticProducts.Items)
+{
+
+    <input class="input-id" type="hidden" value="@item.Name" />
+    <input class="input-viewcount" type="hidden" value=@item.ViewCount />
+}
+
+
+
+
+@foreach (var item in Model.StatisticUserProducts.Items)
+{
+
+    <input class="input-name" type="hidden" value="@item.UserName" />
+    <input class="input-viewcount-user" type="hidden" value=@item.AmountProducts />
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Biểu đồ thống kê</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Dashboard</li>
+    </ol>
+  
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-area mr-1"></i>
+                    Top lượt xem của các sản phẩm
+                </div>
+                <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+            </div>
+        </div>
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar mr-1"></i>
+                    Top người dùng bán có nhiều sản phẩm nhất
+                </div>
+                <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+            </div>
+        </div>
+    </div>
+    
+</div>

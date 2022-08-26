@@ -1,0 +1,53 @@
+﻿@model eRentSolution.ViewModels.System.Users.UserAvatarUpdateRequest
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+@{
+    ViewData["Title"] = "EditAvatar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>EditAvatar</h1>
+
+<h4>UserAvatarUpdateRequest</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditAvatar" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <dl class="row">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Thuộc tính
+                            </th>
+                            <th>
+                                Mô tả
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @Html.DisplayNameFor(model => model.OldAvatarFilePath)
+
+                            </td>
+                            <td>
+                                <a href="/User/EditAvatar/@Model.Id"><img src="@Configuration["BaseAddress"]/user-content/@Model.OldAvatarFilePath" alt="N/A" style="width: 100px; height: 100px; object-fit: cover;"></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </dl>
+            <div class="form-group">
+                <label asp-for="AvatarFile" class="control-label">Ảnh đại diện</label>
+                <input asp-for="AvatarFile" type="file" class="form-control" />
+                <span asp-validation-for="AvatarFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Id" type="hidden" class="form-control" />
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+

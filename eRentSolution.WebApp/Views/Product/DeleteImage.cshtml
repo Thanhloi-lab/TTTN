@@ -1,0 +1,50 @@
+﻿@model eRentSolution.ViewModels.Catalog.ProductImages.ProductImageDeleteRequest
+
+@{ ViewData["Title"] = "DeleteImage";
+                Layout = "~/Views/Shared/_Layout3.cshtml"; }
+
+<link rel="stylesheet" href="~/css/input.css" />
+
+
+<div class="container-contact100">
+    <div class="wrap-contact100">
+        <form asp-action="DeleteImage" mothod="post" class="contact100-form validate-form">
+            <span class="contact100-form-title">
+                Xóa hình ảnh chi tiết
+            </span>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="wrap-input100 validate-input">
+                <span style="font-size:2rem; text-align:center; font-weight:500;" class="input100">@Html.DisplayNameFor(model => model.ImageId): @Html.DisplayFor(model => model.ImageId)</span>
+
+                <span class="focus-input100"></span>
+
+            </div>
+            <div class="wrap-input100 validate-input">
+                <span style="font-size:2rem; text-align:center; font-weight:500;" class="input100">@Html.DisplayNameFor(model => model.ProductId): @Html.DisplayFor(model => model.ProductId)</span>
+
+                <span class="focus-input100"></span>
+
+            </div>
+            <div class="wrap-input100 validate-input">
+                <span style="font-size:2rem; text-align:center; font-weight:500;" class="input100">@Html.DisplayNameFor(model => model.ProductDetailId): @Html.DisplayFor(model => model.ProductDetailId)</span>
+
+                <span class="focus-input100"></span>
+
+            </div>
+            <div class="container-contact100-form-btn">
+                <div class="wrap-contact100-form-btn">
+                    <div class="contact100-form-bgbtn"></div>
+                    <input asp-for="ProductDetailId" type="hidden" input />
+                    <input asp-for="ImageId" type="hidden" input />
+                    <input asp-for="ProductId" type="hidden" input />
+                    <button type="submit" class="contact100-form-btn">
+                        <span>
+                            Submit
+                            <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

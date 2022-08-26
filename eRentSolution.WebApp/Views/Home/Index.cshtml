@@ -1,0 +1,207 @@
+﻿@model HomeViewModel
+@using eRentSolution.ViewModels.Catalog.Products;
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+
+@{ ViewData["Title"] = "Home Page"; }
+
+@section slider{
+    <div class="box-slider">
+        <div style="margin:0;"  class="slide-owl owl-carousel owl-theme slider">
+            @if (Model.Slides != null)
+            {
+                @for (int index = 0; index < Model.Slides.Count; index++)
+                {
+                    var slide = Model.Slides[index];
+                    <div class="item">
+                        <a href="@slide.Url"><img style="height:360px; object-fit:cover;" src="@Configuration["BaseAddress"]/user-content/@slide.FilePath" alt="@slide.Name" /></a>
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+}
+
+<div class="box-product">
+    <p class="category__heading">Tin đăng nổi bật</p>
+    <div class="product-slide carousel-nav-center owl-carousel">
+        @{ List<List<ProductViewModel>> featuredProducts = new List<List<ProductViewModel>>();
+            List<ProductViewModel> featuredPart = new List<ProductViewModel>(); }
+
+        @for (int index = 0; index < Model.FeaturedProducts.Items.Count; index++)
+        {
+            featuredPart.Add(Model.FeaturedProducts.Items[index]);
+            if (featuredPart.Count == 4)
+            {
+                featuredProducts.Add(featuredPart);
+                if (index == Model.FeaturedProducts.Items.Count - 1)
+                    break;
+                featuredPart = new List<ProductViewModel>();
+            }
+            if (index == Model.FeaturedProducts.Items.Count - 1)
+            {
+                featuredProducts.Add(featuredPart);
+            }
+
+        }
+        @for (int index = 0; index < featuredProducts.Count; index++)
+        {
+            @foreach (var item in featuredProducts[index])
+        {
+        var url = $"/Product/Details/{item.Id}";
+        <div class="box-full-flex">
+            <div class="box-item">
+                <div style="position:relative;" class="box-item__photo">
+                    <a href="roomdetails.html">
+                        <a href="@url"> <img src="@Configuration["BaseAddress"]/user-content/@item.ThumbnailImage" alt="" class="box-item__img"></a>
+                        <img class="icon-heart" style="width:20px;" src="https://static.chotot.com/storage/chotot-icons/next/save-ad.svg" alt="photos">
+                    </a>
+                </div>
+                <div class="box-item__caption">
+                    <p style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; " class="box-item__name">@item.Name</p>
+                    <p class="box-item__size">@(item.ProductDetailViewModels.ElementAt(0).Width * item.ProductDetailViewModels.ElementAt(0).Length) m²</p>
+                    <p style="text-decoration: line-through;color: #8d8a8a; font-weight: 500; font-size: 1.2rem;" class="box-item-oriPrice">@item.ProductDetailViewModels.ElementAt(0).OriginalPrice&#8363</p>
+                    <p class="box-item__price">@item.ProductDetailViewModels.ElementAt(0).Price&#8363</p>
+                </div>
+            </div>
+        </div>
+    }
+        }
+    </div>
+</div>
+<div class="box-product">
+    <p class="category__heading">Tin đăng cho bạn</p>
+
+    <div class="box-flex">
+        @foreach (var item in Model.PageProducts.Items)
+        {
+            var url = $"/Product/details/{item.Id}";
+            <div class="box-full-flex">
+                <div class="box-item">
+                    <div style="position: relative; class="box-item__photo">
+                        <a href="roomdetails.html">
+                            <a href="@url"> <img src="@Configuration["BaseAddress"]/user-content/@item.ThumbnailImage" alt="" class="box-item__img"></a>
+                            <img class="icon-heart" width="20px;" src="https://static.chotot.com/storage/chotot-icons/next/save-ad.svg" alt="photos">
+                        </a>
+                    </div>
+                    <div class="box-item__caption">
+                        <p style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; " class="box-item__name">@item.Name</p>
+                        <p class="box-item__size">@(item.ProductDetailViewModels.ElementAt(0).Width * item.ProductDetailViewModels.ElementAt(0).Length) m²</p>
+                        <p style="text-decoration: line-through;color: #8d8a8a; font-weight: 500; font-size: 1.2rem;" class="box-item-oriPrice">@item.ProductDetailViewModels.ElementAt(0).OriginalPrice&#8363</p>
+                        <p class="box-item__price">@item.ProductDetailViewModels.ElementAt(0).Price&#8363</p>
+                    </div>
+                </div>
+            </div>}
+
+    </div>
+    @await Component.InvokeAsync("Pager", Model.PageProducts);
+</div>
+
+<script>
+    let navText = ["<i class='bx bx-chevron-left'></i>", "<i class='bx bx-chevron-right'></i>"]
+    $('.slide-owl').owlCarousel({
+        loop: true,
+        margin: 10,
+        dots: true,
+   
+        autoplay: true,
+        autoplayTimeout: 3000,
+        responsive: {
+
+            1000: {
+                items: 1
+            }
+        }
+    })
+    $('.product-slide').owlCarousel({
+        items: 2,
+        dots: false,
+        nav: true,
+        navText: navText,
+       
+        responsive: {
+            500: {
+                items: 2
+            },
+            1280: {
+                items: 5
+            },
+            1600: {
+                items: 6
+            }
+        }
+    })
+    
+    //$(".loadmore").slice(0, 5).show()
+    //    $(".btn-loadmore").on("click", function () {
+    //        $(".loadmore:hidden").slice(0, 5).slideDown()
+    //        if ($(".loadmore:hidden").length == 0) {
+    //            $(".btn-loadmore").fadeOut('slow')
+    //        }
+    //    })
+
+  
+</script>
+
+<style>
+    
+    .carousel-nav-center {
+        position: relative;
+    }
+
+        .carousel-nav-center .owl-nav button i {
+            font-size: 4rem;
+        }
+
+        .carousel-nav-center .owl-nav button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .carousel-nav-center .owl-nav .owl-prev {
+            position: absolute;
+            left: -9px;
+            top:144px;
+        }
+
+        .carousel-nav-center .owl-nav .owl-next {
+            position: absolute;
+            right: -9px;
+            top:144px;
+        }
+
+    .owl-nav button {
+        border: none;
+        outline: none;
+    }
+
+        .owl-nav button i {
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+        }
+
+        .owl-nav button:hover i {
+            color: #c0392b;
+            
+        }
+    .bx-chevron-left:before {
+        content: "\e9af";
+    }
+    .bx-chevron-right:before {
+        content: "\e9b2";
+    }
+    .bx {
+        font-family: 'boxicons' !important;
+        font-weight: normal;
+        font-style: normal;
+        font-variant: normal;
+        line-height: 1;
+        display: inline-block;
+        text-transform: none;
+        speak: none;
+        -webkit-font-smoothing: antialiased;
+        color:#fff;
+    }
+   
+</style>

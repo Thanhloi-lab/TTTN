@@ -1,0 +1,416 @@
+﻿@model eRentSolution.ViewModels.Catalog.Products.ProductViewModel;
+@using eRentSolution.Utilities.Constants;
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+@{ ViewData["Title"] = "MyProductDetail";
+    Layout = "~/Views/Shared/_Layout3.cshtml"; }
+@section Scripts{
+    <script>
+    setTimeout(function () {
+            $('#msgAlert').fadeOut('slow');
+        }, 2000);</script>
+
+}
+<style>
+    th {
+        text-align: center !important;
+        vertical-align: middle !important;
+    }
+
+    td {
+        text-align: center !important;
+        vertical-align: middle !important;
+    }
+</style>
+<div style="display:flex;justify-content:flex-start;align-items:center;width:100vw;height:100%;flex-direction:column; margin: 20px 0 20px 0;">
+    <div style="display:flex; justify-content:space-between;align-items:center">
+        @if (ViewBag.Success != null)
+        {
+            <div style="left:385px;" id="msgAlert" class="alert alert-success" role="alert">
+                @ViewBag.Success
+            </div>
+        }
+        @if (TempData["failResult"] != null)
+        {
+            <div style="left:385px;" id="msgAlert" class="alert alert-success" role="alert">
+                @TempData["failResult"]
+            </div>
+        }
+        <h1>Thông tin phòng</h1>
+    </div>
+    <table style="font-size:13px;font-weight:bold;" id="customers">
+        <tr>
+            <th style="width:20%">Thuộc tính</th>
+            <th>Mô tả</th>
+
+        </tr>
+        <tr>
+            <td> @Html.DisplayNameFor(model => model.Id)</td>
+            <td>@Html.DisplayFor(model => model.Id)</td>
+
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Name)</td>
+            <td>@Html.DisplayFor(model => model.Name)</td>
+
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Address)</td>
+            <td><a style="text-decoration:none; font-size:13px; color:blue;" target="_blank" href="https://www.google.com.vn/maps/place/@Html.DisplayFor(model => model.Address)">@Html.DisplayFor(model => model.Address)</a></td>
+
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Categories)</td>
+            <td>
+                @foreach (var item in Model.Categories)
+                {
+                    @Html.DisplayFor(model => item)
+                    <br />
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Description)</td>
+            <td>@Html.DisplayFor(model => model.Description)</td>
+
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.ThumbnailImage)</td>
+            <td>@Html.DisplayFor(model => model.ThumbnailImage)</td>
+
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.ViewCount)</td>
+            <td>@Html.DisplayFor(model => model.ViewCount)</td>
+
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Stock)</td>
+            <td>@Html.DisplayFor(model => model.Stock)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.DateCreated)</td>
+            <td>@Html.DisplayFor(model => model.DateCreated)</td>
+
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.IsFeatured)</td>
+            @if (Model.IsFeatured == eRentSolution.Data.Enums.Status.Active)
+            {
+                <td>Có</td>
+            }
+            else
+            {
+                <td>Không</td>
+            }
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Status)</td>
+            <td>@Html.DisplayFor(model => model.Status)</td>
+        </tr>
+    </table>
+
+    <table style="font-size:13px;font-weight:bold;" id="customers">
+        <h1>Chi tiết phòng</h1>
+        <tr>
+            <th style="text-align:center;vertical-align:middle;">
+                Tên loại sản phẩm
+            </th>
+            <th style="text-align:center;vertical-align:middle;">
+                Chi tiết
+            </th>
+            <th style="text-align:center;vertical-align:middle;">
+                Giá
+            </th>
+            <th style="text-align:center;vertical-align:middle;">
+                Giá gốc
+            </th>
+            <th style="text-align:center;vertical-align:middle;">
+                Tồn kho
+            </th>
+            <th style="text-align:center;vertical-align:middle;">
+                Chiều rộng
+            </th>
+            <th style="text-align:center;vertical-align:middle;">
+                Chiều dài
+            </th>
+            <th style="text-align:center;vertical-align:middle;">
+                Diện tích
+            </th>
+            <th style="text-align:center;vertical-align:middle;">
+                Hình ảnh
+            </th>
+            <th>
+
+            </th>
+        </tr>
+        @foreach (var item in Model.ProductDetailViewModels)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.ProductDetailName)
+                </td>
+                <td>
+                    <p style="word-wrap:break-word; width:200px;"> @Html.Raw(item.Detail)</p>
+
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.OriginalPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Stock)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Width)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Length)
+                </td>
+                <td>
+                    @(item.Width * item.Length)
+                </td>
+                <td>
+
+                <div style="display: flex; max-width: 200px; flex-wrap: wrap; justify-content: center;">
+                    @{ var i = 0;
+                        foreach (var image in item.Images)
+                        {
+                            <div class="@i" onclick="myFunction(@image.Id)"><img class="imgbox stt-@image.Id" style="width: 50px; height: 50px; object-fit: cover;margin-left:8px;" src="@Configuration["BaseAddress"]/user-content/@image.ImagePath" alt="" class="box-item__img"></div>
+                            <div style="display:flex; flex-direction:column;">
+                                <form asp-action="EditImage" method="get" style="padding: 0 20px 0 20px; display:none;">
+                                    <input asp-for="@image.Id" name="imageId" type="hidden" input />
+                                    <input asp-for="@Model.Id" name="productId" type="hidden" input />
+                                    <input class="editInput editInput-@image.Id" type="submit" value="Sửa ảnh" class="btn warning small" />
+                                </form>
+
+                                <form style="display:none;" asp-action="DeleteImage" method="get" style="padding: 0 20px 0 20px;">
+                                    <input asp-for="@image.Id" name="imageId" type="hidden" input />
+                                    <input asp-for="@item.Id" name="productDetailId" type="hidden" input />
+                                    <input class="delInput delInput-@image.Id" style="width:56px;" type="submit" value="Xóa ảnh" class="btn danger small" />
+                                </form>
+                            </div> 
+                            i++;
+                        } 
+                    }
+                </div>
+                </td>
+                <td>
+                    <div style="display: flex; max-width: 200px; flex-direction: row; flex-wrap: wrap; justify-content:center;">
+                        <form asp-action="AddImage" method="get" style=" padding: 5px;">
+                            <input asp-for="@Model.Id" name="productId" type="hidden" input />
+                            <input asp-for="@item.Id" name="productDetailId" type="hidden" input />
+                            <input class="btn info" type="submit" value="Thêm ảnh" />
+                        </form>
+                        <form style=" padding: 5px;">
+
+                            <input onclick="myFunction1()" class="btn danger" type="button" value="Xóa ảnh" />
+                        </form>
+                        <form style=" padding: 5px;">
+
+                            <input onclick="myFunction2()" class="btn success" type="button" value="Sửa ảnh" />
+                        </form>
+                        <form asp-action="EditDetail" method="get" style=" padding: 5px;">
+                            <input asp-for="@item.Id" name="productDetailId" type="hidden" input />
+                            <input asp-for="@Model.Id" name="productId" type="hidden" input />
+                            <input class="btn warning" type="submit" value="Sửa chi tiết" />
+                        </form>
+                        <form asp-action="DeleteDetail" method="get" style=" padding: 5px;">
+                            <input asp-for="@item.Id" name="productDetailId" type="hidden" input />
+                            <input asp-for="@Model.Id" name="productId" type="hidden" input />
+                            <input class="btn danger" type="submit" value="Xóa chi tiểt" />
+                        </form>
+
+                    </div>
+
+                </td>
+            </tr>
+        }
+
+    </table>
+    <div style="display:flex; justify-content:center; align-items:center; margin-top: 20px;">
+        <form asp-action="AddDetail" method="get">
+            <input asp-for="@Model.Id" name="id" type="hidden" input />
+            <input style="border-radius:0; margin-right: 10px;" type="submit" value="Thêm chi tiết" class="btn info" />
+        </form>
+        <div>
+            @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
+            <a style="margin-top:1px; display:block;" class="btn success" asp-controller="Product" asp-action="MyListProducts">Quay về</a>
+        </div>
+    </div>
+
+</div>
+<script>
+    var imgId = document.querySelectorAll(".imgId");
+    var itemId = document.querySelectorAll(".itemId");
+    var imgValue = new Array();
+    var itemValue = new Array();
+    for (var i = 0; i < imgId.length; i++) {
+        imgValue[i] = imgId[i].value;
+        itemValue[i] = itemId[i].value;
+    }
+    var numberArr = [];
+    function myFunction(n) {
+        if (document.querySelector(".border-black")) {
+            document.querySelector(".border-black").classList.remove("border-black");
+        }
+
+        document.querySelector(`.stt-${n}`).classList.add("border-black")
+
+        numberArr.pop();
+        numberArr.push(n);
+        console.log(numberArr)
+
+    }
+    var delInput = document.querySelectorAll(".delInput")
+    var editInput = document.querySelectorAll(".editInput")
+    function myFunction1() {
+
+        var flag = false;
+        if (numberArr.length == 0) flag = true
+        for (var i = 0; i < delInput.length; i++) {
+
+            if (delInput[i].className.includes(numberArr[0])) {
+
+                delInput[i].form.submit();
+            }
+        }
+        
+        if (flag == true) {
+            alert("Bạn chưa chọn ảnh")
+        }
+    }
+    function myFunction2() {
+        var flag = false;
+        if (numberArr.length == 0) flag = true
+        for (var i = 0; i < editInput.length; i++) {
+
+            if (editInput[i].className.includes(numberArr[0])) {
+
+                editInput[i].form.submit();
+            }
+        }
+
+        if (flag == true) {
+            alert("Bạn chưa chọn ảnh")
+        }
+    }
+
+
+
+</script>
+<style>
+    #customers {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 50%;
+    }
+
+        #customers td, #customers th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #customers tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #customers tr:hover {
+            background-color: #ddd;
+        }
+
+        #customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+    .btn {
+        border: 2px solid black;
+        background-color: white;
+        color: black;
+        padding: 7px 14px;
+        font-size: 14px;
+        cursor: pointer;
+        text-decoration: none;
+        outline: none;
+    }
+
+    /* Green */
+    .success {
+        border-color: #4CAF50;
+        color: green;
+    }
+
+        .success:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+    h1 {
+        text-align: center;
+        text-transform: uppercase;
+        color: #4CAF50;
+    }
+
+    .info {
+        border-color: #2196F3;
+        color: dodgerblue;
+    }
+
+        .info:hover {
+            background: #2196F3;
+            color: white;
+        }
+
+    /* Orange */
+    .warning {
+        border-color: #ff9800;
+        color: orange;
+    }
+
+        .warning:hover {
+            background: #ff9800;
+            color: white;
+        }
+
+    /* Red */
+    .danger {
+        border-color: #f44336;
+        color: red;
+    }
+
+        .danger:hover {
+            background: #f44336;
+            color: white;
+        }
+
+    /* Gray */
+    .default {
+        border-color: #e7e7e7;
+        color: black;
+    }
+
+        .default:hover {
+            background: #e7e7e7;
+        }
+
+    .small {
+        padding: 3px 14px;
+    }
+</style>
+
+
+@*<form asp-action="EditImage" method="get" style="padding: 0 20px 0 20px;">
+        <input asp-for="@image.Id" name="imageId" type="hidden" input />
+        <input asp-for="@Model.Id" name="productId" type="hidden" input />
+        <input type="submit" value="Edit" class="btn warning small" />
+    </form>
+    <form asp-action="DeleteImage" method="get" style="padding: 0 20px 0 20px;">
+        <input asp-for="@image.Id" name="imageId" type="hidden" input />
+        <input asp-for="@item.Id" name="productDetailId" type="hidden" input />
+        <input style="width:56px;" type="submit" value="Del" class="btn danger small" />
+    </form>*@
